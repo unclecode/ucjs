@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>UCJS App</title>
+        <link rel="stylesheet" href="./assets/style.css" />
+    </head>
+    <body>
+        <div id="app"></div>
+        <script type="module">
+            import { Ucjs, preact_renderer } from "./assets/ucjs.js";
+            import App from "./components/App.js";
+           
+            let state = {
+                text: "",
+                items: ["Task 1", "Task 2"],
+            };
+
+            let $el = document.getElementById("app");
+            fetch("http://127.0.0.1:8000/")
+                .then((res) => res.json())
+                .then((data) => {
+                    console.log(data);
+                    state.items = data["data"].tasks
+                    let app = new Ucjs($el, App, state);
+                })
+                .catch((err) => {
+                    console.log(err);
+                    let app = new Ucjs($el, App, state);
+                });               
+        </script>
+    </body>
+</html>
