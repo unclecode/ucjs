@@ -226,6 +226,10 @@ Observer.prototype.observeArray = function (items) {
     }
 };
 
+function addNewKey(obj, key, val) {
+    defineReactive(obj, key, val);
+}
+
 function defineReactive(obj, key, val) {
     var dep = new Dep();
     var childOb = observe(val);
@@ -242,7 +246,7 @@ function defineReactive(obj, key, val) {
             return value;
         },
         set: function reactiveSetter(newVal) {
-            // console.log("set", key, newVal);
+            console.log("set", key, newVal);
             var value = val;
             if (newVal === value || (newVal !== newVal && value !== value)) {
                 return;
@@ -252,6 +256,15 @@ function defineReactive(obj, key, val) {
             dep.notify();
         },
     });
+    // Add new mthod setState to obj with this access
+    obj.setState = (newState) => {
+        for (let key in newState) {
+            addNewKey(obj, key, newState[key]);
+        }
+    };    
+    // listen to when new keys are added to the object
+    // and add them as reactive properties
+    
     return obj;
 }
 
