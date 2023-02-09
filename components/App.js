@@ -5,8 +5,10 @@ export default function App(state) {
     let todolist = new TodoList({ state });
     this.render = function () {
         return h`
-            <div>
+            <header class="container">Header</header>
+            <main class="container">
                 ${todolist.render()}
-            </div>`;
+            </main>
+            <footer class="container">Footer</footer>`;
     };
 }

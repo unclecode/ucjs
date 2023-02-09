@@ -291,7 +291,7 @@ export const registerStyle = (key, style) => {
     if (!style_tag) {
         // If there is no style tag, create one.
         style_tag = document.createElement("style");
-        style_tag.id = "ucjs-style" + key;
+        style_tag.id = "ucjs-style-" + key;
         style_tag.innerHTML = style;
         document.head.appendChild(style_tag);
     }
