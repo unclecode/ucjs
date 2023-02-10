@@ -5,6 +5,9 @@ from functools import partial
 from dotenv import load_dotenv
 load_dotenv(join(dirname(__file__), 'config.env'))
 os.environ["PYTHONDONTWRITEBYTECODE"] = "1"
+# add /Users/unclecode/devs/protos to the python path
+import sys
+sys.path.append(os.path.join(os.path.dirname(__file__), '..'))
 
 app = Flask(__name__)
 # Endable CORS
@@ -45,13 +48,19 @@ for key in endpoints:
         if file.endswith(".py"):
             # dynamically import the the file
             module = __import__(key + "." + file[:-3], fromlist=[file[:-3]])
-            
-            # get all functions in the module
-            functions = [func for func in dir(module) if callable(getattr(module, func)) and not func.startswith("__")]
-            # add the functions to the endpoints dictionary
-            endpoints[key][file[:-3]] = []
-            for func in functions:
-                endpoints[key][file[:-3]].append((func, partial(getattr(module, func), request, app)))
+
+            # check if module has a variable called export
+            if hasattr(module, 'export'):
+                functions = getattr(module, 'export')
+                
+                # # get all functions in the module. Use type() to check if the function is a function and not a class
+                # functions = [func for func in dir(module) if callable(getattr(module, func)) and type(getattr(module, func)) == type(request)]
+
+                
+                # add the functions to the endpoints dictionary
+                endpoints[key][file[:-3]] = []
+                for func in functions:
+                    endpoints[key][file[:-3]].append((func.__name__, partial(func, request, app)))
                 
 
 # for each key in endpoints add a route to the flask app
@@ -66,8 +75,8 @@ for key in endpoints:
 def before():
     # Check for API key is in header or not, bypass it if it is localhost
     if request.remote_addr not in ['127.0.0.1', 'localhost', '0.0.0.0']:
-        if not request.headers.get('API-KEY'):
-            return jsonify({"error": "API-KEY is missing in the header"}), 401
+        if not request.headers.get('Authorization'):
+            return jsonify({"error": "Authorization is missing in the header"}), 401
 
 
 

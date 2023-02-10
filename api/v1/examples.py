@@ -68,4 +68,4 @@ def get_upload_page_html(request, app):
     """
 
 
-    
+export = [request_tyoes, tasks, upload_file, get_upload_page_html]
