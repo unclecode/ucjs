@@ -22,19 +22,11 @@ try:
     module = __import__("config", fromlist=["config"])
     app.config.update(module.config)
 except:    
-    # Check the first available port after 5050
-    port = os.environ.get('PORT', 9000)
-    # while True:
-    #     result = subprocess.run(['lsof', '-i', 'tcp:' + str(port)], stdout=subprocess.PIPE)
-    #     if not result.stdout:
-    #         break
-    #     port += 1
-
     # Default config
     config = {
-        "DEBUG": True,
+        "DEBUG": os.environ.get('DEBUG', True),
         "HOST": "0.0.0.0",
-        "PORT": int(port),
+        "PORT": int(os.environ.get('PORT', 9000)),
         # Set "UPLOAD_FOLDER" to current directory "uploads" folder
         "UPLOAD_FOLDER": os.path.join(os.path.dirname(__file__), "uploads"), 
         'API_KEY': '1234',
