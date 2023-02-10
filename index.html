@@ -31,7 +31,7 @@
             let $el = document.getElementsByTagName("body")[0];
 
             // Example of using fetch state to get data from a server or function.
-            fetch("http://127.0.0.1:5050/v1/examples/tasks")
+            fetch("/api/v1/examples/tasks")
                 .then((res) => res.json())
                 .then((data) => {
                     console.log(data.tasks);

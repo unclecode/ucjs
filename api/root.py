@@ -1,6 +1,9 @@
 from flask import Flask, jsonify, request
 import os, subprocess
+from os.path import join, dirname
 from functools import partial
+from dotenv import load_dotenv
+load_dotenv(join(dirname(__file__), 'config.env'))
 os.environ["PYTHONDONTWRITEBYTECODE"] = "1"
 
 app = Flask(__name__)
@@ -20,18 +23,18 @@ try:
     app.config.update(module.config)
 except:    
     # Check the first available port after 5050
-    port = 5050
-    while True:
-        result = subprocess.run(['lsof', '-i', 'tcp:' + str(port)], stdout=subprocess.PIPE)
-        if not result.stdout:
-            break
-        port += 1
+    port = os.environ.get('PORT', 9000)
+    # while True:
+    #     result = subprocess.run(['lsof', '-i', 'tcp:' + str(port)], stdout=subprocess.PIPE)
+    #     if not result.stdout:
+    #         break
+    #     port += 1
 
     # Default config
     config = {
         "DEBUG": True,
-        "HOST": "127.0.0.1",
-        "PORT": port,
+        "HOST": "0.0.0.0",
+        "PORT": int(port),
         # Set "UPLOAD_FOLDER" to current directory "uploads" folder
         "UPLOAD_FOLDER": os.path.join(os.path.dirname(__file__), "uploads"), 
         'API_KEY': '1234',
