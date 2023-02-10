@@ -1,6 +1,6 @@
 #!/bin/bash
-# Change current working directory to /home/ubuntu/gpt3plus/
-# cd /home/ubuntu/gpt3plus/
-# Activate virtual environment
-# source /home/ubuntu/gpt3plus/venv/bin/activate
-gunicorn root:app -c gunicorn.config.py
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
+cd $DIR
+source venv/bin/activate
+GUNICORN_DIR = $(which gunicorn)
+$GUNICORN_DIR/gunicorn root:app -c gunicorn.config.py

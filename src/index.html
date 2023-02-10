@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>UCJS App</title>
+        <!-- <link rel="stylesheet" href="https://unpkg.com/@picocss/pico@1.5.7/css/pico.min.css" /> -->
+        <!-- <link rel="stylesheet" href="https://unpkg.com/@picocss/pico@1.5.7/css/pico.classless.min.css" /> -->
+        <link rel="stylesheet" href="./assets/app.css" />
+        <link rel="stylesheet" href="./assets/colors.css" />
+        <link rel="stylesheet" href="./assets/layout.css" />
+    </head>
+    <body>
+        <!-- It's your choice to use a div or body as the root element. -->
+        <!-- <div id="app"></div> -->
+        <script type="module">
+            import { Ucjs, preact_renderer } from "./assets/ucjs.js";
+            import App from "./components/App.js";
+           
+            // An xample of intial state.
+            let state = {
+                text: "",
+                items: ["Task 1", "Task 2"],
+            };
+
+            // If you use a div as the root element, you need to use getElementById.
+            // let $el = document.getElementById("app");
+
+            // If you use body as the root element, you need to use getElementsByTagName.
+            let $el = document.getElementsByTagName("body")[0];
+
+            // Example of using fetch state to get data from a server or function.
+            fetch("/api/v1/examples/tasks")
+                .then((res) => res.json())
+                .then((data) => {
+                    console.log(data.tasks);
+                    state.items = data.tasks
+                    // Create the app.
+                    let app = new Ucjs($el, App, state);
+                })
+                .catch((err) => {
+                    console.log(err);
+                    let app = new Ucjs($el, App, state);
+                });               
+        </script>
+    </body>
+</html>
