@@ -1,19 +1,13 @@
-import { h, Observer } from "../assets/ucjs.js";
-import TodoList from "./Todolist.js";
+import { html, render, useState } from "../assets/ucjs.js";
 import Nav from "./Nav.js";
-
-export default function App(state) {
-    let todolist = new TodoList({ state });
-    let navbar = new Nav({
-        navClass : "pv2"
-    });
-    this.render = function () {
-        return h`
+import TodoList from "./TodoList.js";
+export default function App(state, $el) {
+    const app = html/*html*/ `
         <main class="container">
-            ${navbar.render()}
-            ${todolist.render()}
+            <${Nav} navClass="pv2" />
+            <${TodoList} />
         </main>
         <footer class="container">Footer</footer>
-        `
-    };
+    `;
+    render(app, $el);
 }

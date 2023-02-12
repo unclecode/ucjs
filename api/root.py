@@ -5,11 +5,11 @@ from functools import partial
 from dotenv import load_dotenv
 load_dotenv(join(dirname(__file__), 'config.env'))
 os.environ["PYTHONDONTWRITEBYTECODE"] = "1"
-# add /Users/unclecode/devs/protos to the python path
 import sys
 sys.path.append(os.path.join(os.path.dirname(__file__), '..'))
 
 app = Flask(__name__)
+
 # Endable CORS
 @app.after_request
 def after_request(response):
@@ -30,7 +30,6 @@ except:
         "DEBUG": os.environ.get('DEBUG', True),
         "HOST": "0.0.0.0",
         "PORT": int(os.environ.get('PORT', 9000)),
-        # Set "UPLOAD_FOLDER" to current directory "uploads" folder
         "UPLOAD_FOLDER": os.path.join(os.path.dirname(__file__), "uploads"), 
         'API_KEY': '1234',
     }
@@ -52,11 +51,6 @@ for key in endpoints:
             # check if module has a variable called export
             if hasattr(module, 'export'):
                 functions = getattr(module, 'export')
-                
-                # # get all functions in the module. Use type() to check if the function is a function and not a class
-                # functions = [func for func in dir(module) if callable(getattr(module, func)) and type(getattr(module, func)) == type(request)]
-
-                
                 # add the functions to the endpoints dictionary
                 endpoints[key][file[:-3]] = []
                 for func in functions:
@@ -64,12 +58,20 @@ for key in endpoints:
                 
 
 # for each key in endpoints add a route to the flask app
+endpoint_urls = []
 for key in endpoints:
     for file in endpoints[key]:
         for func_name, func in endpoints[key][file]:
             # add the route to the flask app
-            print('/' + key + '/' + file + '/' + func_name)
+            # print('/' + key + '/' + file + '/' + func_name)
+            endpoint_urls.append('/' + key + '/' + file + '/' + func_name)
             app.add_url_rule('/' + key + '/' + file + '/' + func_name, func_name, func, methods=['GET', 'POST'])
+
+# Creat an end point to return API documentation
+@app.route('/')
+def index():
+    return jsonify({"endpoints": endpoint_urls})
+
 
 @app.before_request
 def before():

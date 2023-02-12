@@ -2,7 +2,7 @@ from werkzeug.utils import secure_filename
 import os, json
 os.environ["PYTHONDONTWRITEBYTECODE"] = "1"
 
-def request_tyoes(request, app):
+def request_echo(request, app):
     print("Query string: " + str(request.args))
     print("Request body: " + str(request.data))
     print("Request headers: " + str(request.headers))
@@ -68,4 +68,4 @@ def get_upload_page_html(request, app):
     """
 
 
-export = [request_tyoes, tasks, upload_file, get_upload_page_html]
+export = [request_echo, tasks, upload_file, get_upload_page_html]

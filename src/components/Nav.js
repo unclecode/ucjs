@@ -1,16 +1,14 @@
-import { h } from "../assets/ucjs.js";
+import { html, render, useState } from "../assets/ucjs.js";
 
-export default function App(state) {
-    this.render = function () {
-        return h`<nav class="${state.navClass || ''}">
+export default function Nav(props) {
+    return html/*html*/ `<nav class="${props.navClass || ""}">
         <ul>
-          <li><strong>Brand</strong></li>
+            <li><strong>Brand</strong></li>
         </ul>
         <ul>
-          <li><a href="#">Link</a></li>
-          <li><a href="#">Link</a></li>
-          <li><a href="#" role="button">Button</a></li>
+            <li><a href="#">Link</a></li>
+            <li><a href="#">Link</a></li>
+            <li><a href="#" role="button">Button</a></li>
         </ul>
-      </nav>`;
-    };
+    </nav>`;
 }

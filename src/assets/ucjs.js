@@ -1,6 +1,6 @@
 // import { html, Component, render } from 'https://unpkg.com/htm/preact/standalone.module.js';
 import htm from "https://unpkg.com/htm?module";
-import { html, render as rn } from "https://unpkg.com/htm/preact/standalone.module.js";
+import { html as _hh, render as rn } from "https://unpkg.com/htm/preact/standalone.module.js";
 
 // ------------------------------------------------------
 // Utils
@@ -379,5 +379,29 @@ const _html = (...args) => {
 };
 
 export const h_default = htm.bind(_h);
-export const h_preact = html
+export const h_preact = _hh
 export const h = _html
+export const createElement = React.createElement;
+export const useState = (initialState) => {
+    const [state, setState] = React.useState(initialState);
+    const updateState = (newChanges) => {
+        setState((prevState) => {
+            console.log("updateState", prevState, newChanges)
+            return { ...prevState, ...newChanges };
+        });
+    };
+    return [state, setState, updateState];
+};
+
+export const useEffect = React.useEffect;
+export const useRef = React.useRef;
+export const useReducer = React.useReducer;
+export const useContext = React.useContext;
+export const useLayoutEffect = React.useLayoutEffect;
+export const useMemo = React.useMemo;
+export const useCallback = React.useCallback;
+export const useImperativeHandle = React.useImperativeHandle;
+export const useDebugValue = React.useDebugValue;
+
+export const render = ReactDOM.render;
+export const html = htm.bind(createElement);
